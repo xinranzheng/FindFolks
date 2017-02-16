@@ -1,0 +1,127 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+<body>
+  <div id="nav-bar">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">FindFolks</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="/viewEverythingEventRelated">Events</a></li>
+          <li><a href="/groups">Groups</a></li>
+          <li><a href="/logout">Logout</a></li>
+
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <form action="/post" method="POST">
+    <div>
+      <div style="width: auto; margin-left: auto; margin-right: auto">
+       <h1 align="center">Welcome, {{username}}!</h1></br>
+       <input class="form-control" style="width: auto; margin-left: auto; margin-right: auto" type="text" name = "blog" placeholder="Post a status" required/> </br>
+       <input class="btn btn-primary center-block" type="submit" value = Post />
+     </div>
+   </div>
+ </form>
+
+
+
+
+ <div>
+  <table class = "table table-bordered" style="width: auto; margin-left: auto; margin-right: auto ">
+   <th>Time</th>
+   <th>Post</th>
+
+   {% for line in posts %}
+   <tr>
+    <td>{{line.ts}}</td>
+    <td>{{line.blog_post}}</td>
+  </tr>
+  {% endfor %}
+</table>
+</div>
+
+<div>
+  <h4 align="center">Find a friend!</h4>
+  <div class="well" style="width: 30%; margin-left: auto; margin-right: auto">
+    <div>
+      <form action='/findFriend' method="POST">
+        <input class ="form-control" style="width: auto; margin-left: auto; margin-right: auto" type="text" name = "friendname" placeholder="Name of Friend" required/> </br>
+        <input class="btn btn-primary center-block" type="submit" value = "Find" />
+      </form>
+    </div>
+    <div>
+      {% if errorFriend or errorAddFriend %}
+      <div class="alert alert-danger" style="text-align: center;">
+        <p class="error"><strong>Error:</strong> {{errorAddFriend}}</p>
+      </div>
+      {% elif friendTable is defined %}
+      <table id="friendResults" class="table table-bordered table-responsive" style="width: auto; margin-left: auto; margin-right: auto">
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Username</th>
+        <th>Add Friend</th>
+        {% for friend in friendTable %}
+        <tr>
+          <td>{{friend.firstname}}</td>
+          <td>{{friend.lastname}}</td>
+          <td>{{friend.username}}</td>
+          <td>
+            <form action='/addFriend' method="POST">
+              <input style="display: none" name="friendname" value="{{friend.username}}">
+              <input class="btn btn-primary center-block" type="submit" value = "Add Friend" />
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% endif %}
+    </div>
+  </div>
+  <div>
+  </div>
+</div>
+
+
+
+
+
+<div>
+  <h4 align="center">See events your friends plan to go to!</h4>
+  <div class="well center-block" style="width: 30%">
+    <div>
+      <form action="/viewFriendEvents" method="POST">
+        <input class="btn btn-primary center-block" type="submit" value = "View Friend Events" /></br>
+      </form>
+    </div>
+    {% if errorViewFriendEvent %}
+      <div class="alert alert-danger" style="text-align: center;">
+        <p class="error"><strong>Error:</strong> {{errorViewFriendEvent}}</p>
+      </div>
+    {% else %}
+    <table id="friendResults" class="table table-bordered table-responsive" style="width: auto; margin-left: auto; margin-right: auto">
+      <th>Friend</th>
+      <th>Event ID</th>
+      <th>Event Name</th>
+      {% for friends in friendsEvents %}
+      <tr>
+        <td>{{friends.username}}</td>
+        <td>{{friends.event_id}}</td>
+        <td>{{friends.title}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+  </div>
+</div>
+
+</body>
+
+
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+<body>
+  <div id="nav-bar">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">FindFolks</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="/home">Home</a></li>
+          <li><a href="/viewEverythingEventRelated">Events</a></li>
+          <li><a href="/groups">Groups</a></li>
+          <li><a href="/logout">Logout</a></li>
+
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="well center-block" style="width:98%">
+  <h1 align="center">Welcome to Your Groups Page!</h1>
+</div>
+
+
+
+
+<div class="well center-block" style="width:50%" id="viewGroups">
+  <h4 align="center">View Groups! </h4>
+  <div class="center-block">
+    {% if allGroupTableError or errorJoinGroup %}
+    <div class="alert alert-danger" style="text-align: center;">
+      <p class="error"><strong>Error:</strong> {{allGroupTableError}}</br>
+        {{errorJoinGroup}}</p>
+      </div>
+      {% else %}
+      <table id="friendResults" class="table table-bordered table-responsive" style="width: auto; margin-left: auto; margin-right: auto">
+        <th>Group ID</th>
+        <th>Group Name</th>
+        <th>Description</th>
+        <th>Join a group</th>
+        {% for groups in allGroupTable %}
+        <tr>
+          <td>{{groups.group_id}}</td>
+          <td>{{groups.group_name}}</td>
+          <td>{{groups.description}}</td>
+          <td>
+            <form action='/joinGroup' method="POST">
+              <input style="display: none" name="groupID" value="{{groups.group_id}}">
+              <input class="btn btn-primary center-block" type="submit" value = "Join" />
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% endif %}
+    </div>
+    {% if groupInterestTable is defined%}
+    <table class="table table-bordered" style="width: auto; margin-left: auto; margin-right: auto">
+        <th>Interest</th>
+        <th>Group Name</th>
+        <th>Group ID</th>
+        {% for event in groupInterestTable %}
+        <tr>
+          <td>{{event.category}}</td>
+          <td>{{event.group_name}}</td>
+          <td>{{event.group_id}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    {% elif groupInterestTableError %}
+    <div class="alert alert-danger" style="text-align: center;">
+        <p class="error"><strong>Error:</strong> {{groupInterestTableError}}</p>
+    </div>
+    {% endif %}
+
+    <form action="/viewGroups" method="POST">
+      <input class="btn btn-primary center-block" type="submit" value = "View All Groups" /></br>
+    </form>
+
+
+
+
+
+    
+    <form action="/findGroupInterests" method="POST">
+      <input class="btn btn-primary center-block" type="submit" value = "View Interest Groups" /></br>
+    </form>
+  </div>
+
+
+  <div class="well center-block" style="width:50%" id="createGroup">
+    <h4 align="center">Create your own group!</h4>
+    <div class="center-block">
+      <form action="/createGroup" method="POST">
+        <input class ="form-control" style="width: auto; margin-left: auto; margin-right: auto" type="text" name = "groupname" placeholder="Name of Group" required/> </br>
+        <input class ="form-control" style="width: auto; margin-left: auto; margin-right: auto" type="text" name = "description" placeholder="Description of Group..." required/> </br>
+
+
+        <input class="btn btn-primary center-block" type="submit" value = "Create" />
+
+        {% if error %}
+        <p class="error"><strong>Error:</strong> {{error}}</p>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+
+  <div class="well center-block" style="width:50%" id="viewGroupRating">
+    <h4 align="center">See Average Ratings for Events!</h4>
+    <div class="center-block">
+      <form action="/viewAllGroupRating" method="POST">
+        <input class="btn btn-primary center-block" type="submit" value = "View Ratings" /></br>
+      </form>
+      {% if errorAllGroupRating %}
+      <div class="alert alert-danger" style="text-align: center;">
+        <p class="error"><strong>Error:</strong> {{errorAllGroupRating}}</br></p>
+      </div>
+      {% elif allGroupTableRatings is defined %}
+      <table id="friendResults" class="table table-bordered table-responsive" style="width: auto; margin-left: auto; margin-right: auto">
+        <th>Event ID</th>
+        <th>Rating</th>
+        {% for event in allGroupTableRatings %}
+        <tr>
+          <td>{{event.group_id}}</td>
+          <td>{{event.rating}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% endif %}
+    </div>
+  </div>
+
+
+
+
+
+
+</body>
+</html>

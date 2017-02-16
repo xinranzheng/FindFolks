@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
+	<style>
+		body{background-image: url("http://www.kinokho-studio.com/wp-content/uploads/2016/09/equipe-1.jpg"); background-size: 100%; }
+	</style>
+</head>
+
+<body>
+
+	{% if not message %}
+	<h1 align="center" style="font-size: 95pt; font-style: semibold; font-family: 'Open Sans Condensed', sans-serif">FindFolks</h1>
+	<div style="margin-top: auto; margin-bottom: auto;">
+		<div class="center-block" style="text-align: center;">
+			<a href="/login">Login</a>
+			<a href="/register">Register</a>
+		</div>
+	</div>
+	{% endif %}
+
+	{% if message %}
+	<a href="/logout">Logout</a>
+	<a href="/remove_account">Remove Account</a>
+	<p class="message">You are logged in {{message}}. You have {{num}} follower(s)</p> </br>
+	<a href="/tweets">View your tweets</a> </br>
+	<a href="/find_people">Find people to follow</a> </br>
+	<a href="/unfollow">Unfollow someone</a> </br>
+	<a href="/view_followed">View people you have followed</a> </br>
+</br>
+
+<h4>15 most recent tweets from you and your followers </h4> </br>
+
+{% for line in tweets%}
+<p>{{line}}</p>
+<hr>
+{% endfor %}
+{% endif %}
+</body>
+
+</html>
